@@ -46,7 +46,7 @@ export class WorkflowComponent implements OnInit {
     let uri = "/wrk/" + this.workflow;
     this.baseService.get(uri).subscribe((res) => {
       if (res["error"]) {
-        this.error = res.error;
+        this.error = res["error"];
       }
       this.workflowData = res;
       this.displayItems = res["items"];
