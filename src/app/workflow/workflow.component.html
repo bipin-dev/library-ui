@@ -1,0 +1,51 @@
+<app-navs></app-navs>
+<div *ngIf="error" class="alert alert-danger" role="alert">
+  Error: {{ error }}
+</div>
+<div style="color:#17a2b8; font-size: 24px;" class="ml-3 mn-3 mt-3">
+  <strong *ngIf="workflowData.header">
+    {{ workflowData.header }}
+  </strong>
+</div>
+<app-actions
+  [actions]="top_action"
+  (actionCompleted)="onActionComplete($event)"
+></app-actions>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <ng-template ngFor let-fld [ngForOf]="displayFields" let-i="fldIdx">
+        <th scope="col">{{ fld.label }}</th>
+      </ng-template>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-template ngFor let-item [ngForOf]="displayItems" let-i="index">
+      <tr>
+        <ng-template ngFor let-fld [ngForOf]="displayFields" let-i="fldIdx">
+          <td *ngIf="fld.key">
+            {{ item[fld.key] }}
+          </td>
+        </ng-template>
+        <span>
+          <ng-template [ngForOf]="inline_action" ngFor let-action>
+            <button
+              (click)="openForm(action, item._id)"
+              type="button"
+              class="btn btn-outline-primary ml-3"
+            >
+              {{ action.label }}
+            </button>
+          </ng-template>
+        </span>
+      </tr>
+    </ng-template>
+  </tbody>
+</table>
+
+<app-inline-actions
+  [action]="currentInlineAction"
+  [recordId]="recordId"
+  [isFormOpen]="isFormOpen"
+  (actionCompleted)="onActionComplete($event)"
+></app-inline-actions>

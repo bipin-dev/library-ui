@@ -1,0 +1,101 @@
+<div class="mt-3 mb-3 ml-3">
+  <ng-template [ngForOf]="actions" ngFor let-action>
+    <button
+      (click)="openForm(action)"
+      type="button"
+      class="btn btn-outline-primary mr-3"
+    >
+      {{ action.label }}
+    </button>
+  </ng-template>
+</div>
+<div
+  class="modal fade"
+  id="formActionModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        {{ formData.header }}
+        <h5 *ngIf="formData.header" class="modal-title" id="exampleModalLabel">
+          {{ formData.header }}
+        </h5>
+      </div>
+      <div class="modal-body">
+        <ng-template [ngForOf]="fields" ngFor let-field let-i="index">
+          <div *ngIf="field.type == 'input'" class="form-group">
+            <label [attr.for]="'input-text-' + i">{{ field.label }}</label>
+            <input
+              class="form-control"
+              [ngModel]="field.value || ''"
+              (ngModelChange)="updateVal($event, field, i)"
+              [attr.id]="'input-text-' + i"
+              [placeholder]="field.label"
+            />
+          </div>
+          <div *ngIf="field.type == 'checkbox'" class="form-check mb-3">
+            <input
+              type="checkbox"
+              [attr.id]="'checkbox-' + i"
+              class="form-check-input"
+              [ngModel]="field.value || false"
+              (ngModelChange)="updateVal($event, field, i)"
+            />
+            <label class="form-check-label" [attr.for]="'checkbox-' + i">{{
+              field.label
+            }}</label>
+          </div>
+          <div *ngIf="field.type == 'select'" class="form-group">
+            <label [attr.for]="'select-text-' + i">{{ field.label }}</label>
+            <select
+              [ngModel]="field.value || ''"
+              (ngModelChange)="updateVal($event, field, i)"
+              [attr.id]="'select-text-' + i"
+              class="form-control"
+            >
+              <ng-template [ngForOf]="field.values" ngFor let-options>
+                <option>{{ options }}</option>
+              </ng-template>
+            </select>
+          </div>
+          <div *ngIf="field.type == 'number'" class="form-group">
+            <label [attr.for]="'input-text-' + i">{{ field.label }}</label>
+            <input
+              type="number"
+              [attr.id]="'number-' + i"
+              class="form-control"
+              [ngModel]="field.value || false"
+              (ngModelChange)="updateVal($event, field, i)"
+            />
+          </div>
+          <div *ngIf="field.type == 'date'" class="form-group">
+            <label for="">{{ field.label }}</label>
+            <input
+              type="date"
+              [ngModel]="field.value || ''"
+              (ngModelChange)="updateVal($event, field, i)"
+              [attr.id]="'date-text-' + i"
+              class="form-control"
+            />
+          </div>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeActionModal()"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="saveForm()">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
