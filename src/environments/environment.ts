@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   server: "http://localhost:4000"
+  // server: "http://ec2-18-217-247-175.us-east-2.compute.amazonaws.com/api"
 };
 
 /*

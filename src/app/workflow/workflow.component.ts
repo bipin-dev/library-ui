@@ -8,10 +8,11 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class WorkflowComponent implements OnInit {
   workflow: String;
-  workflowData: Object = {};
+  workflowData: any = {};
   currentInlineAction: any = {};
   recordId: String;
   isFormOpen: Boolean = false;
+  searchEnabled: Boolean = false;
   displayItems: any = [];
   inline_action: any = [];
   top_action: any = [];
@@ -40,6 +41,7 @@ export class WorkflowComponent implements OnInit {
     this.inline_action = [];
     this.top_action = [];
     this.error = null;
+    this.searchEnabled = false;
   }
 
   loadWorkflow() {
@@ -53,6 +55,7 @@ export class WorkflowComponent implements OnInit {
       this.displayFields = res["display"];
       this.inline_action = res["inline_action"] || [];
       this.top_action = res["top_action"] || [];
+      this.searchEnabled = res["searchEnabled"] || false;
     });
   }
 
@@ -65,6 +68,18 @@ export class WorkflowComponent implements OnInit {
     this.currentInlineAction = {};
     this.isFormOpen = false;
     this.recordId = null;
+  }
+
+  search(data) {
+    console.log("inside search is .. ", data);
+    let uri = `/wrk/${this.workflow}/search`;
+    let params = { search: data };
+    this.baseService.get(uri, params).subscribe((res) => {
+      if (res["error"]) {
+        this.error = res["error"];
+      }
+      this.displayItems = res;
+    });
   }
 
   openForm(action, id) {

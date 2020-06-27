@@ -1,9 +1,12 @@
-<app-navs></app-navs>
+<app-navs
+  [searchEnabled]="searchEnabled"
+  (autoComplete)="search($event)"
+></app-navs>
 <div *ngIf="error" class="alert alert-danger" role="alert">
   Error: {{ error }}
 </div>
 <div style="color:#17a2b8; font-size: 24px;" class="ml-3 mn-3 mt-3">
-  <strong *ngIf="workflowData.header">
+  <strong *ngIf="workflowData && workflowData.header">
     {{ workflowData.header }}
   </strong>
 </div>
@@ -32,7 +35,7 @@
             <button
               (click)="openForm(action, item._id)"
               type="button"
-              class="btn btn-outline-primary ml-3"
+              class="btn btn-outline-primary btn-sm ml-3"
             >
               {{ action.label }}
             </button>

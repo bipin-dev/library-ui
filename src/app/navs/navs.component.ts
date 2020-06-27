@@ -1,12 +1,22 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  ViewChild,
+  EventEmitter,
+  ElementRef
+} from "@angular/core";
 import { BaseService } from "../base.service";
 import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-navs",
-  templateUrl: "./navs.component.html",
+  templateUrl: "./navs.component.html"
 })
 export class NavsComponent implements OnInit {
+  @Input() searchEnabled;
+  @Output() autoComplete = new EventEmitter();
   navs: any = [];
   constructor(
     private baseService: BaseService,
@@ -50,6 +60,11 @@ export class NavsComponent implements OnInit {
 
   routeToLogin(url) {
     this.router.navigate([url]);
+  }
+
+  autocompleteSearch(data) {
+    console.log("searching item is .. ", data);
+    this.autoComplete.emit(data);
   }
 
   isUserLoggedIn() {
